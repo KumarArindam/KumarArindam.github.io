@@ -1,8 +1,13 @@
 FROM jekyll/jekyll
 
-COPY --chown=jekyll:jekyll Gemfile .
-COPY --chown=jekyll:jekyll Gemfile.lock .
+WORKDIR /srv/jekyll
+COPY Gemfile .
 
-RUN bundle install --quiet --clean
+RUN gem install bundler
+RUN bundle install --clean --quiet
 
-CMD ["jekyll", "serve"]
+EXPOSE 4000
+
+CMD [ "/usr/gem/bin/bundle", "exec", "/usr/local/bundle/bin/jekyll", "serve", "--port", "4000", "--host", "0.0.0.0" ]
+
+STOPSIGNAL 2
